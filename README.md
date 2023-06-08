@@ -25,10 +25,10 @@ maximizes the Generalized Bayes Factor.
 # Generalized Bayes Factor
 
 The Generalized Bayes Factor is introduced by Yuan et al in the
-aforementioned paper and it is also a deterministic function on the
-Weight of Evidence (WoE) first introduced by Alan Turing. The WoE is the
+aforementioned paper. The GBF is a deterministic function of the Weight
+of Evidence (WoE) first introduced by Alan Turing. The WoE is the
 logarithm of the GBF (see Good, I. J. (1985),
-<a src = "https://www.cs.tufts.edu/~nr/cs257/archive/jack-good/weight-of-evidence.pdf">“Weight
+<a src= "https://www.cs.tufts.edu/~nr/cs257/archive/jack-good/weight-of-evidence.pdf">“Weight
 of Evidence: A Brief Survey”</a>, Bayesian Statistics 2, pp. 249-270,
 for more general discussion of history and concepts).
 
@@ -43,9 +43,8 @@ in the network.
 
 In concrete terms, if we assume a highly optimized algorithm that can
 calculate Generalized Bayes Factors for 10 partial instantiations in the
-network per second, these would be the running times if we calculated
-Generalized Bayes Factors on Bayesian networks using an exhaustive
-search algorithm:
+network per second, the running times using an exhaustive search
+algorithm would be:
 
 | Number of Nodes | States per Node | Total Combinations                  | Expected Runtime     |
 |----------------:|----------------:|:------------------------------------|:---------------------|
@@ -132,12 +131,7 @@ mre_solution <- mre::mre_hierarchical_beam_search(
     ## Creating beam number 1 of 2 
     ## Currently calculating Generalized Bayes Factors for 6 hypotheses. 
     ## 
-    ## Calculating GBF for Hypothesis #1 
-    ## Calculating GBF for Hypothesis #2 
-    ## Calculating GBF for Hypothesis #3 
-    ## Calculating GBF for Hypothesis #4 
-    ## Calculating GBF for Hypothesis #5 
-    ## Calculating GBF for Hypothesis #6 
+    ##  Calculating GBF for Hypothesis 1 of 6 Calculating GBF for Hypothesis 2 of 6 Calculating GBF for Hypothesis 3 of 6 Calculating GBF for Hypothesis 4 of 6 Calculating GBF for Hypothesis 5 of 6 Calculating GBF for Hypothesis 6 of 6
     ## Creating beam number 2 of 2 
     ## Currently calculating Generalized Bayes Factors for 7 hypotheses. 
     ## Total blacklisted hypotheses: 4 
@@ -145,14 +139,7 @@ mre_solution <- mre::mre_hierarchical_beam_search(
     ##  gender == 'male'
     ## with a GBF of: 36.7063516416079 
     ## 
-    ## Calculating GBF for Hypothesis #1 
-    ## Calculating GBF for Hypothesis #2 
-    ## Calculating GBF for Hypothesis #3 
-    ## Calculating GBF for Hypothesis #4 
-    ## Calculating GBF for Hypothesis #5 
-    ## Calculating GBF for Hypothesis #6 
-    ## Calculating GBF for Hypothesis #7 
-    ## Calculated 7 hypotheses in 0.116761922836304 
+    ##  Calculating GBF for Hypothesis 1 of 7 Calculating GBF for Hypothesis 2 of 7 Calculating GBF for Hypothesis 3 of 7 Calculating GBF for Hypothesis 4 of 7 Calculating GBF for Hypothesis 5 of 7 Calculating GBF for Hypothesis 6 of 7 Calculating GBF for Hypothesis 7 of 7Calculated 7 hypotheses in 0.0500891208648682 
     ## 
     ## Hypothesis #1: ((gender == 'male') & (age == 'old')) 
     ## GBF Score: 99.9818490333196 
