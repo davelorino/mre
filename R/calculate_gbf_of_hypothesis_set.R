@@ -5,17 +5,20 @@
 #' @import purrr
 #' @import tidyr
 #' @import dplyr
+#' @import stringr
 #' @param x A dataframe.
 #' @param hypotheses A dataframe containing a set of hypotheses returned by either mre::create_first_set_of_candidate_hypotheses() or mre::create_expanded_set_of_candidate_hypotheses()
 #' @param target_variable A string representing the variable you are trying to explain.
 #' @param target_value string representing the particular state of the target variable you are trying to explain.
 #' @param metric A string to specify the metric by which you want to calculate the GBF. Currently only posterior odds is implemented, likelihood ratio will be implemented in then next release.
+#' @param method A string to specify which search method is being used - currently only hbs is implemented.
 #' @return A dataframe containing the best hypotheses among the supplied set and their GBF scores.
+#' @author Davide Lorino
 #' @examples
 #'
 #' # Create a synthetic dataset of age, gender and income.
 #' n <- 10000
-#' #' set.seed(42)
+#' set.seed(42)
 #' age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #' gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #'

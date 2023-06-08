@@ -25,8 +25,8 @@ The second dataframe in the list contains the 'blacklist' - a dataframe of hypot
 }
 \examples{
 # Create a synthetic dataset of age, gender and income.
-#' n <- 10000
-#' set.seed(42)
+n <- 10000
+set.seed(42)
 age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 
@@ -70,4 +70,7 @@ first_level_beam_result <- calculate_gbf_of_hypothesis_set(
 # Prune the resutls of the first beam to only the hypotheses with good GBF scores
 pruned_first_level_beam_result <- prune_beam_search_results(first_level_beam_result, n_nodes)
 
+}
+\author{
+Davide Lorino
 }

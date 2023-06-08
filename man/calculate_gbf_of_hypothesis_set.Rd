@@ -23,6 +23,8 @@ calculate_gbf_of_hypothesis_set(
 \item{target_value}{string representing the particular state of the target variable you are trying to explain.}
 
 \item{metric}{A string to specify the metric by which you want to calculate the GBF. Currently only posterior odds is implemented, likelihood ratio will be implemented in then next release.}
+
+\item{method}{A string to specify which search method is being used - currently only hbs is implemented.}
 }
 \value{
 A dataframe containing the best hypotheses among the supplied set and their GBF scores.
@@ -34,7 +36,7 @@ Takes a set of candidate hypotheses and returns the Generalized Bayes Factor of 
 
 # Create a synthetic dataset of age, gender and income.
 n <- 10000
-#' set.seed(42)
+set.seed(42)
 age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 
@@ -71,4 +73,7 @@ first_level_beam_result <- calculate_gbf_of_hypothesis_set(
   target_variable,
   target_value
 )
+}
+\author{
+Davide Lorino
 }

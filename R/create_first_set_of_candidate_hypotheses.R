@@ -6,14 +6,16 @@
 #' @import purrr
 #' @import tidyr
 #' @import dplyr
+#' @import stringr
 #' @param x A dataframe.
 #' @param target_variable A string representing the variable you are trying to explain.
 #' @param target_value string representing the particular state of the target variable you are trying to explain.
 #' @return A dataframe containing the first layer of hypotheses / "beam" in the hierarchical beam search algorithm.
+#' @author Davide Lorino
 #' @examples
 #' # Create a synthetic dataset of age, gender and income.
-#' #' n <- 10000
-#' #' set.seed(42)
+#' n <- 10000
+#' set.seed(42)
 #' age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #' gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #'

@@ -24,9 +24,10 @@ A dataframe containing the best hypotheses and their GBF scores.
 Takes a dataset, the target variable and target state being explained, and returns a dataframe of hypotheses with the best GBF scores.
 }
 \examples{
+
 # Create a synthetic dataset of age, gender and income.
 n <- 10000
-#' set.seed(42)
+set.seed(42)
 age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 
@@ -55,11 +56,14 @@ target_value = "high"
 
 # Run the algorithm
 mre <- mre_hierarchical_beam_search(
-  df = x,
-  target_variable = target_var,
-  target_value = target_val
+  x,
+  target_variable,
+  target_value
 )
 
 # Check Results
 mre
+}
+\author{
+Davide Lorino
 }

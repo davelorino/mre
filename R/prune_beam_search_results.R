@@ -11,10 +11,11 @@
 #' @param beam_search_result A dataframe containing the result of calling mre::calculate_gbf_of_hypothesis_set(x, hypotheses, target_variable, target_value).
 #' @param n_nodes An integer representing the number of nodes in the network.
 #' @return A list containing a set of current-best hypotheses and gbf scores as a dataframe in the first list element, and a dataframe of badly performing hypotheses in the second element to be ignored from successive scans.
+#' @author Davide Lorino
 #' @examples
 #' # Create a synthetic dataset of age, gender and income.
-#' #' n <- 10000
-#' #' set.seed(42)
+#' n <- 10000
+#' set.seed(42)
 #' age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #' gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #'

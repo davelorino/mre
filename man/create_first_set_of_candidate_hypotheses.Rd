@@ -21,8 +21,8 @@ Creates the first set of hypotheses in the search space.
 }
 \examples{
 # Create a synthetic dataset of age, gender and income.
-#' n <- 10000
-#' set.seed(42)
+n <- 10000
+set.seed(42)
 age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 
@@ -51,4 +51,7 @@ target_variable = "income"
 # Usage
 hypotheses <- create_first_set_of_candidate_hypotheses(x, target_variable)
 hypotheses
+}
+\author{
+Davide Lorino
 }

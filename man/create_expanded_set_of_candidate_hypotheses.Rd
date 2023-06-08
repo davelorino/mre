@@ -16,7 +16,9 @@ create_expanded_set_of_candidate_hypotheses(
 
 \item{target_variable}{A string representing the variable you are trying to explain.}
 
-\item{current_candidates}{A dataframe taken from the first list element of the return value of mre::prune_beam_search_results(x, n_nodes)}
+\item{current_candidates}{A dataframe taken from the first list element of the return value of `mre::prune_beam_search_results(x, n_nodes)`}
+
+\item{blacklist}{A dataframe taken from the second list element of the return value of `mre::prune_beam_search_results(x, n_nodes)`}
 }
 \value{
 A dataframe containing an expanded layer of hypotheses / "beam" in the hierarchical beam search space.
@@ -25,9 +27,12 @@ A dataframe containing an expanded layer of hypotheses / "beam" in the hierarchi
 Takes a list of the current best set of hypotheses and creates an expanded set of candidate hypotheses.
 }
 \examples{
+library(dplyr)
+library(tidyr)
+library(purrr)
 # Create a synthetic dataset of age, gender and income.
-#' n <- 10000
-#' set.seed(42)
+n <- 10000
+set.seed(42)
 age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 
@@ -49,9 +54,11 @@ income <- factor(mapply(function(a, g) {
 
 # Join age, gender and income into a dataframe
 x <- data.frame(age, gender, income)
+n_nodes <- length(names(x))
 
 # Define the targets that you want explanations for
 target_variable = "income"
+target_value = "high"
 
 # Create an initial set of candidate hypotheses
 first_hypotheses <- create_first_set_of_candidate_hypotheses(x, target_variable)
@@ -59,9 +66,11 @@ first_hypotheses <- create_first_set_of_candidate_hypotheses(x, target_variable)
 # Calculate GBF scores of all hypotheses in the first beam
 first_level_beam_result <- calculate_gbf_of_hypothesis_set(
   x,
-  second_level_beam,
+  first_hypotheses,
   target_variable,
-  target_value
+  target_value,
+  metric = "posterior odds",
+  method = "hbs"
 )
 
 # Prune the resutls of the first beam to only the hypotheses with good GBF scores
@@ -72,13 +81,13 @@ current_candidates <- pruned_first_level_beam_result[[1]] \%>\%
   dplyr::mutate(hypothesis = stringr::str_remove(hypothesis, "\\\\(")) \%>\%
   dplyr::mutate(hypothesis = stringr::str_remove(hypothesis, "\\\\)")) \%>\%
   dplyr::rename(first_beam_hypothesis = hypothesis) \%>\%
-  dplyr::left_join(first_level_beam, by = c("first_beam_hypothesis" = "filter_string"))
+  dplyr::left_join(first_hypotheses, by = c("first_beam_hypothesis" = "filter_string"))
 
 # Retain a dataframe of hypotheses to skip on future scans
 blacklist <- pruned_first_level_beam_result[[2]] \%>\%
   dplyr::mutate(hypothesis = stringr::str_remove(hypothesis, "^\\\\(")) \%>\%
   dplyr::mutate(hypothesis = stringr::str_remove(hypothesis, "\\\\)$")) \%>\%
-  dplyr::left_join(first_level_beam, by = c("hypothesis" = "filter_string"))
+  dplyr::left_join(first_hypotheses, by = c("hypothesis" = "filter_string"))
 
 # Create a second level of hypotheses by expanding the first set + ignoring the blacklist
 second_level_hypotheses <- create_expanded_set_of_candidate_hypotheses(
@@ -90,4 +99,7 @@ second_level_hypotheses <- create_expanded_set_of_candidate_hypotheses(
 
 # Check results
 second_level_hypotheses
+}
+\author{
+Davide Lorino
 }

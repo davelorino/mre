@@ -11,10 +11,12 @@
 #' @param metric A string to specify the metric by which you want to calculate the GBF. Currently only posterior odds is implemented, likelihood ratio will be implemented in then next release.
 #' @param method A string to specify the search algorithm. Currently set to hbs for hierarchical beam search. May add exhaustive search in the next release with a warning flag about expected running times on large networks.
 #' @return A dataframe containing the best hypotheses and their GBF scores.
+#' @author Davide Lorino
 #' @examples
+#'
 #' # Create a synthetic dataset of age, gender and income.
 #' n <- 10000
-#' #' set.seed(42)
+#' set.seed(42)
 #' age <- factor(sample(c("young", "adolescent", "old"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #' gender <- factor(sample(c("male", "nonbinary", "female"), n, replace = TRUE, prob = c(0.33, 0.33, 0.34)))
 #'
@@ -43,9 +45,9 @@
 #'
 #' # Run the algorithm
 #' mre <- mre_hierarchical_beam_search(
-#'   df = x,
-#'   target_variable = target_var,
-#'   target_value = target_val
+#'   x,
+#'   target_variable,
+#'   target_value
 #' )
 #'
 #' # Check Results
