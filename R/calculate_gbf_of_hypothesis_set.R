@@ -78,7 +78,8 @@ calculate_gbf_of_hypothesis_set <- function(
 
     generalized_bayes_factors <- list()
     for(i in 1:nrow(hypotheses)){
-      cat(paste0("Calculating GBF for Hypothesis #", i), "\n")
+      n_hypotheses <- nrow(hypotheses)
+      cat("\r", paste0("Calculating GBF for Hypothesis #", i, " of ", n_hypotheses))
       # Probability of hypothesis given evidence
       probability_of_hypothesis_given_evidence <- nrow(
         x %>%
