@@ -8,7 +8,7 @@ Description: The MRE of a Bayesian Network is proposed by Changhe Yuan and colle
     The Generalized Bayes Factor is importantly different from a conventional Bayes Factor in that it represents the odds of a hypothesis given some evidence relative to the absence of that evidence, and compares this metric across the full combinatorial set of potential hypotheses.
     Because calculating Generalized Bayes Factor of every possible permutation of nodes and states in a Bayesian network creates a super-exponential search space, the Hierarchical Beam Search is proposed by the authors of the original method. 
     This package is currently the first open-source solution to implementing the Most Relevant Explanation algorithm through Hierarchical Beam Search.
-License: GPL >= 2.x
+License: GPL 2.0
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr, purrr, stringr, tidyr

@@ -1,0 +1,67 @@
+---
+title: "MRE Tests"
+author: "Davide Lorino"
+date: "2023-06-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(mre)
+library(bnlearn)
+library(dplyr)
+library(tidyr)
+data("Seatbelts")
+data("asia")
+data("insurance")
+
+#asia_without_e <- asia %>%
+#  select(-E)
+
+#mre::mre_hierarchical_beam_search(
+#  asia_without_e,
+#  "T",
+#  "yes"
+#)
+
+mre::mre_hierarchical_beam_search(
+  x = insurance,
+  target_variable = "ThisCarDam",
+  target_value = "Severe"
+)
+
+library(causaldata)
+data(package = "causaldata")
+data("avocado")
+avocado %>%
+  mutate(PriceChange = AveragePrice - lag(AveragePrice)) %>%
+  mutate(VolumePurchasedByPeopleWhoBreatheOxygen = TotalVolume) %>%
+  mutate(VolumeChange = TotalVolume - lag(TotalVolume)) %>%
+  select(PriceChange, VolumeChange, TotalVolume) %>%
+  mutate(PriceChangeCat = 
+           case_when(PriceChange > 0 ~ "Up", 
+                     TRUE ~ "Down"
+                     ),
+         VolumeChangeCat = 
+           case_when(VolumeChange > 0 ~ "Up",
+                     TRUE ~ "Down"
+                     ),
+         CustomersBreatheOxygen = "Yes"
+           ) %>%
+  filter(!is.na(VolumeChange) & !is.na(PriceChange)) %>%
+  select(PriceChangeCat, VolumeChangeCat, CustomersBreatheOxygen) %>%
+  mre::mre_hierarchical_beam_search(target_variable = "VolumeChangeCat", target_value = "Down")
+
+
+```
+
+
+```{r}
+
+levels(seatbelts_df_discretized_category$DriversKilledPercCategory)
+```
+
+

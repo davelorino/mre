@@ -9,7 +9,6 @@
 #' @import stringr
 #' @param x A dataframe.
 #' @param target_variable A string representing the variable you are trying to explain.
-#' @param target_value string representing the particular state of the target variable you are trying to explain.
 #' @return A dataframe containing the first layer of hypotheses / "beam" in the hierarchical beam search algorithm.
 #' @author Davide Lorino
 #' @examples

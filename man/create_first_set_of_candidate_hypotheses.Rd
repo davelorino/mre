@@ -10,8 +10,6 @@ create_first_set_of_candidate_hypotheses(x, target_variable)
 \item{x}{A dataframe.}
 
 \item{target_variable}{A string representing the variable you are trying to explain.}
-
-\item{target_value}{string representing the particular state of the target variable you are trying to explain.}
 }
 \value{
 A dataframe containing the first layer of hypotheses / "beam" in the hierarchical beam search algorithm.
