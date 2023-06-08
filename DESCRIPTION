@@ -1,0 +1,15 @@
+Package: mre
+Type: Package
+Title: Calculate the Most Relevant Explanation of a Bayesian Network
+Version: 0.1.0
+Author: Davide Lorino
+Maintainer: Davide Lorino <davelorino@gmail.com>
+Description: The MRE of a Bayesian Network is proposed by Changhe Yuan and colleagues as an approximate inference algorithm for discovering the partial instantiation of nodes in a Bayesian network which achieves the highest Generalized Bayes Factor. 
+    The Generalized Bayes Factor is importantly different from a conventional Bayes Factor in that it represents the odds of a hypothesis given some evidence relative to the absence of that evidence, and compares this metric across the full combinatorial set of potential hypotheses.
+    Because calculating Generalized Bayes Factor of every possible permutation of nodes and states in a Bayesian network creates a super-exponential search space, the Hierarchical Beam Search is proposed by the authors of the original method. 
+    This package is currently the first open-source solution to implementing the Most Relevant Explanation algorithm through Hierarchical Beam Search.
+License: GPL >= 2.x
+Encoding: UTF-8
+LazyData: true
+Imports: dplyr, purrr, stringr, tidyr
+RoxygenNote: 7.1.2
