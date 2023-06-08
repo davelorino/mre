@@ -55,6 +55,18 @@
 
 mre_hierarchical_beam_search <- function(x, target_variable, target_value){
 
+  if(!target_variable %in% names(x)){
+    cat("\n", paste0("There is no variable named '", target_variable, "' in the dataset."))
+    cat("\n", paste0("Please check your dataset again and specify a different target variable."))
+    return(1)
+  } else {
+    target_value <- x %>% dplyr::filter(target_variable == target_value)
+    if(nrow(target_value) < 1){
+      cat("\n", paste0("There is no value of '", target_value, "' in the '", target_variable, "' variable."))
+      cat("\n", paste0("Please check your dataset again and specify a different target value."))
+      return(1)
+    }
+  }
   # Store the number of nodes to be explained - just used for feedback print statements to tell the user which step we're on
   n_nodes <- x %>%
     tidyr::pivot_longer(cols = names(x), names_to = "nodes", values_to = "states") %>%
@@ -140,7 +152,7 @@ mre_hierarchical_beam_search <- function(x, target_variable, target_value){
       n_hypotheses <- nrow(second_level_beam)
       n_blacklisted_hypotheses <- nrow(blacklist)
       best_hypothesis <- current_candidates %>% head(1)
-      cat(paste0("Creating beam number ", i + 1, " of ", n_nodes), "\n")
+      cat(paste0("\nCreating beam number ", i + 1, " of ", n_nodes), "\n")
       cat(paste0("Currently calculating Generalized Bayes Factors for ", n_hypotheses, " hypotheses."), "\n")
       cat(paste0("Total blacklisted hypotheses: ", n_blacklisted_hypotheses), "\n")
       cat(
