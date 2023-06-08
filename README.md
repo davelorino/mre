@@ -1,8 +1,10 @@
 Davide Lorino
 2023-06-08
 
-- <a href="#most-relevant-explanation"
-  id="toc-most-relevant-explanation">Most Relevant Explanation</a>
+- <a
+  href="#hierarchical-beam-search-for-the-most-relevant-explanation-in-bayesian-networks"
+  id="toc-hierarchical-beam-search-for-the-most-relevant-explanation-in-bayesian-networks">Hierarchical
+  Beam Search for the Most Relevant Explanation in Bayesian Networks</a>
 - <a href="#generalized-bayes-factor"
   id="toc-generalized-bayes-factor">Generalized Bayes Factor</a>
   - <a href="#exhaustive-search-complexity"
@@ -13,7 +15,7 @@ Davide Lorino
   Package</a>
 - <a href="#example-usage" id="toc-example-usage">Example Usage</a>
 
-# Most Relevant Explanation
+# Hierarchical Beam Search for the Most Relevant Explanation in Bayesian Networks
 
 First introduced in <i>Yuan, C. et al. (2011),
 <a href src="https://arxiv.org/abs/1401.3893">“Most Relevant
@@ -139,7 +141,7 @@ mre_solution <- mre::mre_hierarchical_beam_search(
     ##  gender == 'male'
     ## with a GBF of: 36.7063516416079 
     ## 
-    ##  Calculating GBF for Hypothesis 1 of 7 Calculating GBF for Hypothesis 2 of 7 Calculating GBF for Hypothesis 3 of 7 Calculating GBF for Hypothesis 4 of 7 Calculating GBF for Hypothesis 5 of 7 Calculating GBF for Hypothesis 6 of 7 Calculating GBF for Hypothesis 7 of 7Calculated 7 hypotheses in 0.0500891208648682 
+    ##  Calculating GBF for Hypothesis 1 of 7 Calculating GBF for Hypothesis 2 of 7 Calculating GBF for Hypothesis 3 of 7 Calculating GBF for Hypothesis 4 of 7 Calculating GBF for Hypothesis 5 of 7 Calculating GBF for Hypothesis 6 of 7 Calculating GBF for Hypothesis 7 of 7Calculated 7 hypotheses in 0.0510480403900146 
     ## 
     ## Hypothesis #1: ((gender == 'male') & (age == 'old')) 
     ## GBF Score: 99.9818490333196 
