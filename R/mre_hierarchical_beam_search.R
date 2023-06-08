@@ -60,7 +60,7 @@ mre_hierarchical_beam_search <- function(x, target_variable, target_value){
     cat("\n", paste0("Please check your dataset again and specify a different target variable."))
     return(1)
   } else {
-    target_value <- x %>% dplyr::filter(target_variable == target_value)
+    target_value <- x %>% dplyr::filter(target_value %in% target_value)
     if(nrow(target_value) < 1){
       cat("\n", paste0("There is no value of '", target_value, "' in the '", target_variable, "' variable."))
       cat("\n", paste0("Please check your dataset again and specify a different target value."))
