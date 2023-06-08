@@ -22,7 +22,7 @@ First introduced in <i>Yuan, C. et al. (2011), <a href src="https://arxiv.org/ab
 
 # Generalized Bayes Factor
 
-The Generalized Bayes Factor is introduced by Yuan et al in the aforementioned paper and it is also a deterministic function on the Weight of Evidence (WoE) first introduced by Alan Turing. The WoE is the logarithm of the GBF (see Good, I. J. (1985), <a src = "https://www.cs.tufts.edu/~nr/cs257/archive/jack-good/weight-of-evidence.pdf">"Weight of Evidence: A Brief Survey"</a>, Bayesian Statistics 2, pp. 249-270, for more general discussion of history and concepts).
+The Generalized Bayes Factor is introduced by Yuan et al in the aforementioned paper and it is also a deterministic function on the Weight of Evidence (WoE) first introduced by Alan Turing. The WoE is the logarithm of the GBF (see Good, I. J. (1985), <a src= "https://www.cs.tufts.edu/~nr/cs257/archive/jack-good/weight-of-evidence.pdf">"Weight of Evidence: A Brief Survey"</a>, Bayesian Statistics 2, pp. 249-270, for more general discussion of history and concepts).
 
 ## Exhaustive Search Complexity
 
