@@ -14,6 +14,8 @@ library(mre)
 library(bnlearn)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
+library(plotly)
 data("Seatbelts")
 data("asia")
 data("insurance")
@@ -27,15 +29,59 @@ data("insurance")
 #  "yes"
 #)
 
-mre::mre_hierarchical_beam_search(
-  x = insurance,
-  target_variable = "ThisCarDam",
+insurance_accident_severe <- mre::mre_hierarchical_beam_search(
+  x = insurance %>% 
+    dplyr::select(-Theft, -ThisCarDam) %>%
+    dplyr::select(
+      Accident, 
+      GoodStudent, 
+      Age, 
+      SocioEcon, 
+      RiskAversion, 
+      DrivingSkill, 
+      HomeBase
+      ) %>% 
+    mutate(BreathesOxygen = "Yes"),
+  target_variable = "Accident",
   target_value = "Severe"
-)
+) 
 
+
+
+g <- insurance_accident_severe %>%
+  arrange(desc(gbf_score)) %>%
+  head(5) %>%
+          ggplot(aes(x = `hypothesis`, y = `gbf_score`)) +
+              geom_bar(position="stack", stat="identity") +
+              #theme_classic() +
+              theme(
+                panel.background = element_rect(fill = "#35353B", color = "#35353B"),
+                plot.background = element_rect(fill = "#35353B", color = "#35353B"),
+                axis.text.x = element_text(color = "white"),
+                axis.text.y = element_text(color = "white"),
+                axis.title.y = element_text(color = "white"),
+                axis.title.x = element_text(color = "white"),
+                axis.ticks.x = element_line(color = "white"),
+                legend.text = element_text(color = "white"),
+                legend.background = element_rect(fill = "#35353B", color = "#35353B"),
+                legend.title = element_blank()
+              ) +
+              coord_flip() +
+              labs(x="",y="GBF Score")
+
+ggplotly(g) %>%
+   config(displayModeBar = F)
+```
+
+```{r}
 library(causaldata)
 data(package = "causaldata")
 data("avocado")
+```
+
+
+```{r}
+
 avocado %>%
   mutate(PriceChange = AveragePrice - lag(AveragePrice)) %>%
   mutate(VolumePurchasedByPeopleWhoBreatheOxygen = TotalVolume) %>%
@@ -55,13 +101,37 @@ avocado %>%
   select(PriceChangeCat, VolumeChangeCat, CustomersBreatheOxygen) %>%
   mre::mre_hierarchical_beam_search(target_variable = "VolumeChangeCat", target_value = "Down")
 
-
 ```
 
 
 ```{r}
-
 levels(seatbelts_df_discretized_category$DriversKilledPercCategory)
 ```
+
+```{r}
+#library(igraph)
+
+# Create a graph
+g <- graph.empty(n = 15, directed = TRUE)
+
+# Add edges between nodes in one layer and nodes in the next layer
+g <- g + edges(c(1,2, 1,3, 1,4, 1,5, 2,6, 2,7, 2,8, 2,9, 3,10, 3,11, 3,12, 3,13, 4,14, 4,15))
+
+# Create a custom layout
+l <- matrix(0, nrow = vcount(g), ncol = 2)
+angles <- seq(from = 0, to = 2*pi, length.out = 5)
+l[1:5,] <- cbind(cos(angles), sin(angles))
+angles <- seq(from = 0, to = 2*pi, length.out = 5)
+l[6:10,] <- 2 * cbind(cos(angles), sin(angles))
+angles <- seq(from = 0, to = 2*pi, length.out = 5)
+l[11:15,] <- 3 * cbind(cos(angles), sin(angles))
+
+# Plot the graph with the custom layout
+plot(g, layout = l)
+
+
+```
+
+
 
 
