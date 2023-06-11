@@ -66,18 +66,30 @@ prune_beam_search_results <- function(beam_search_result, n_nodes){
     head(1) %>%
     dplyr::pull(gbf_score)
 
-  results <- beam_search_result %>%
-    dplyr::mutate(n_row = dplyr::row_number()) %>%
-    head(n_nodes) %>%
-    dplyr::select(-n_row)
+  if(n_nodes <= 5){
+    results <- beam_search_result %>%
+      dplyr::mutate(n_row = dplyr::row_number()) %>%
+      dplyr::filter(!gbf_score == Inf)
 
-  blacklist_hypotheses <- beam_search_result %>%
-    dplyr::mutate(n_row = dplyr::row_number()) %>%
-    dplyr::filter(n_row > n_nodes)
+    blacklist_hypotheses <- beam_search_result %>%
+      dplyr::mutate(n_row = dplyr::row_number()) %>%
+      dplyr::filter(!n_row %in% results$n_row) %>%
+      dplyr::select(-n_row)
+  } else {
+    results <- beam_search_result %>%
+      dplyr::mutate(n_row = dplyr::row_number()) %>%
+      head(n_nodes) %>%
+      dplyr::filter(!gbf_score == Inf)
+
+    blacklist_hypotheses <- beam_search_result %>%
+      dplyr::mutate(n_row = dplyr::row_number()) %>%
+      dplyr::filter(!n_row %in% results$n_row) %>%
+      dplyr::select(-n_row)
+  }
 
   return(
     list(
-      results <- results,
+      results <- results %>% dplyr::select(-n_row),
       blacklist <- blacklist_hypotheses
     )
   )

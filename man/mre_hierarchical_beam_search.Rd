@@ -4,7 +4,13 @@
 \alias{mre_hierarchical_beam_search}
 \title{Takes a dataset, the target variable and target state being explained, and returns a dataframe of hypotheses with the best GBF scores.}
 \usage{
-mre_hierarchical_beam_search(x, target_variable, target_value)
+mre_hierarchical_beam_search(
+  x,
+  target_variable,
+  target_value,
+  metric = "posterior odds",
+  method = "hbs"
+)
 }
 \arguments{
 \item{x}{A dataframe.}

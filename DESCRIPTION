@@ -12,4 +12,5 @@ License: GPL 2.0
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr, purrr, stringr, tidyr
+Depends: dplyr, purrr, stringr, tidyr
 RoxygenNote: 7.1.2

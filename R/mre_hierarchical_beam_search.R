@@ -53,8 +53,8 @@
 #' # Check Results
 #' mre
 
-mre_hierarchical_beam_search <- function(x, target_variable, target_value){
-
+mre_hierarchical_beam_search <- function(x, target_variable, target_value, metric = "posterior odds", method = "hbs"){
+  runtime_start <- Sys.time()
   if(!target_variable %in% names(x)){
     cat("\n", paste0("There is no variable named '", target_variable, "' in the dataset."))
     cat("\n", paste0("Please check your dataset again and specify a different target variable."))
@@ -86,7 +86,8 @@ mre_hierarchical_beam_search <- function(x, target_variable, target_value){
     x,
     first_level_beam,
     target_variable,
-    target_value
+    target_value,
+    metric
   )
 
   # Prune the results of the first beam search
@@ -152,9 +153,7 @@ mre_hierarchical_beam_search <- function(x, target_variable, target_value){
       n_hypotheses <- nrow(second_level_beam)
       n_blacklisted_hypotheses <- nrow(blacklist)
       best_hypothesis <- current_candidates %>% head(1)
-      cat(paste0("\nCreating beam number ", i + 1, " of ", n_nodes), "\n")
-      cat(paste0("Currently calculating Generalized Bayes Factors for ", n_hypotheses, " hypotheses."), "\n")
-      cat(paste0("Total blacklisted hypotheses: ", n_blacklisted_hypotheses), "\n")
+      cat(paste0("\nTotal blacklisted hypotheses: ", n_blacklisted_hypotheses), "\n")
       cat(
         paste0(
           "The best scoring hypothesis is currently: \n\t",
@@ -164,6 +163,8 @@ mre_hierarchical_beam_search <- function(x, target_variable, target_value){
         ),
         "\n\n"
       )
+      cat(paste0("\nCreating beam number ", i + 1, " of ", n_nodes), "\n")
+      cat(paste0("Currently calculating Generalized Bayes Factors for ", n_hypotheses, " hypotheses."), "\n")
     }
 
     # 5. Calculate GBF scores of second level candidate hypotheses
@@ -172,11 +173,12 @@ mre_hierarchical_beam_search <- function(x, target_variable, target_value){
       x,
       second_level_beam,
       target_variable,
-      target_value
+      target_value,
+      metric
     )
     gbf_end <- Sys.time()
     time_elapsed <- gbf_end - gbf_start
-    cat(paste0("Calculated ", nrow(second_level_beam), " hypotheses in ", time_elapsed), "\n\n")
+    cat(paste0("\nCalculated GBF of ", nrow(second_level_beam), " hypotheses in ", round(time_elapsed, 2), " seconds."), "\n\n")
 
     # 6. Prune results to top 50%
     pruned_second_level_beam_result <- prune_beam_search_results(second_level_beam_result, n_nodes)
@@ -216,5 +218,8 @@ mre_hierarchical_beam_search <- function(x, target_variable, target_value){
     cat(paste0("Hypothesis #", i, ": ", current_best_hypothesis), "\n")
     cat(paste0("GBF Score: ", current_best_score), "\n\n")
   }
-  return(second_level_beam_result)
+  runtime_end <- Sys.time()
+  total_runtime <- round(runtime_end - runtime_start, 2)
+  cat(paste0("\nTotal runtime ", total_runtime, " seconds. \n"))
+  return(second_level_beam_result %>% arrange(desc(gbf_score), nchar(hypothesis)))
 }

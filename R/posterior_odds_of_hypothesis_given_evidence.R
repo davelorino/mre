@@ -22,25 +22,11 @@ posterior_odds_of_hypothesis_given_evidence <- function(
     method = "hbs"
 ){
 
-  hypothesis_string <- ""
-
-  if(method == "exhaustive"){
-    for(i in 1:length(names(hypothesis))){
-      hypothesis_string <- paste0(hypothesis_string, names(hypothesis[i]), " == '", hypothesis[[i]], "'")
-      if(i < length(names(hypothesis))){
-        hypothesis_string <- paste(hypothesis_string, " & ")
-      }
-    }
-  }
-  else {
-    hypothesis_string <- hypothesis
-  }
-
   # Hypothesis
-  hypothesis_filter_string = paste0("(", hypothesis_string, ")")
+  hypothesis_filter_string = paste0("(", hypothesis, ")")
 
   # Negation of Hypothesis
-  negation_of_hypothesis_filter_string = paste0("!(", hypothesis_string, ")")
+  negation_of_hypothesis_filter_string = paste0("!(", hypothesis, ")")
 
   # Evidence
   evidence_filter_string = paste0("(", target_variable, " == '", target_value, "')")
