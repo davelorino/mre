@@ -9,6 +9,7 @@ output:
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
+library(mre)
 library(purrr)
 library(tidyr)
 library(stringr)
@@ -28,7 +29,7 @@ The Generalized Bayes Factor is introduced by Yuan et al in the aforementioned p
 
 The main value of a Generalized Bayes Factor is that it solves the problem that arises when fitting predictive models or any type of correlation analysis that focuses on maximum likelihood. As a toy example, lets imagine that in the space of one year, approximately 10,000 people are injured in car accidents. Surfacing the most common characteristics among people in car accidents through a maximum likelihood framework would generate insights like "people who breathe oxygen are most likely to be involved in a car accident" - what maximum likelihood doesn't account for is the fact that <i>anyone</i> is highly likely to breathe oxygen, regardless of whether they are involved in a car accident, so the association between "breathing oxygen" and "being in a car accident" is spurious. 
 
-The Generalized Bayes Factor takes the approach of representing associations between events and hypotheses as the <i>posterior odds of observing a hypothesis</i> (e.g. breathing oxygen) under the condition that we observe some evidence (being in a car accident), vs observing that same hypothesis under the <i>negation of that hypothesis</i> (not being in a car accident).
+The Generalized Bayes Factor takes the approach of representing associations between events and hypotheses as the <i>posterior odds of observing a hypothesis</i> (e.g. breathing oxygen) under the condition that we observe some evidence (being in a car accident), vs the posterior odds of that same hypothesis when observing the <i>negation</i> of that evidence (i.e. not being in a car accident).
 
 To extend this analogy more concretely, observe the table below:
 
@@ -103,9 +104,9 @@ message_output <- capture.output(res <- mre::mre_hierarchical_beam_search(
 knitr::kable(res)
 ```
 
-It turns out that breathing oxygen adds no additional information to explanation of being involved in an accident when the information about whether or not someone is a reckless driver is taken into account, even when the presence of breathing oxygen is 100% vs being a reckless driver which is present in only 70% of people involved in accidents.
+It turns out that breathing oxygen adds no additional information to the explanation of being involved in an accident when the information about whether or not someone is a reckless driver is taken into account - even when the presence of breathing oxygen is 100% vs being a reckless driver which is present in only 70% of people involved in accidents.
 
-The reason we are able to deduce that being a reckless driver is the Most <i>Relevant</i> Explanation is because it maximises the posterior odds of the hypothesis given that an accident happened, relative to the posterior odds of the hypothesis given that an accident did not happen. Breathing oxygen does not maximise the same quantity because it is a characteristic that is equally present among people involved in accidents and people not involved in accidents. That is the essence of an explanation / hypothesis which maximises the Generalized Bayes Factor.
+The reason that the GBF is able to discover that being a reckless driver is the Most Relevant Explanation is because it maximises the posterior odds of the hypothesis given that an accident happened, relative to the posterior odds of the hypothesis given that an accident did not happen. Breathing oxygen does not maximise the same quantity because it is a characteristic that is equally present among people involved in accidents and people not involved in accidents. That is the essence of an explanation / hypothesis which maximises the Generalized Bayes Factor.
 
 ## Exhaustive Search Complexity
 
@@ -131,7 +132,7 @@ This is why exhaustive search becomes computationally infeasible for even fairly
 
 ## Hierarchical Beam Search
 
-The Hierarchical Beam Search algorithm is proposed by Changhe Yuan and Xiaoyuan Zhu in <i><a href="https://www.sciencedirect.com/science/article/pii/S1570868316300854">'Hierarchical beam search for solving most relevant explanation in Bayesian networks</i></a>, Journal of Applied Logic, Volume 22, 2017, Pages 3-13' as an approximate inference algorithm that performs remarkably well on a suite of Bayesian network benchmarks and works by applying multi-stage scan-and-prune logic, pruning candidate hypotheses that don't improve the Generalized Bayes Factor and gorwing a blacklist of hypotheses from which to cull successive candidate hypotheses until every Generalized Bayes Factor in the search space has either been explicitly evaluated or pruned. This reduction in the search space + pruning criteria combination is what makes it possible for this algorithm to enable reliable inference but also be computationally feasible on even large networks. 
+The Hierarchical Beam Search algorithm is proposed by Changhe Yuan and Xiaoyuan Zhu in <i><a href="https://www.sciencedirect.com/science/article/pii/S1570868316300854">'Hierarchical beam search for solving most relevant explanation in Bayesian networks</i></a>, Journal of Applied Logic, Volume 22, 2017, Pages 3-13' as an approximate inference algorithm that performs remarkably well on a suite of Bayesian network benchmarks and works by applying a multi-stage scan-and-prune logic, pruning candidate hypotheses that don't improve the Generalized Bayes Factor, gradually growing a blacklist of hypotheses from which to cull successive candidate hypotheses until every partial instantiation of nodes in the search space has been either evaluated or pruned. This reduction in the search space + pruning criteria combination is what makes it possible for this algorithm to enable reliable inference but also be computationally feasible on even large networks. 
 
 This graphic taken from their paper describes the search algorithm nicely:
 
