@@ -56,9 +56,10 @@ in a car accident” is spurious.
 The Generalized Bayes Factor takes the approach of representing
 associations between events and hypotheses as the <i>posterior odds of
 observing a hypothesis</i> (e.g. breathing oxygen) under the condition
-that we observe some evidence (being in a car accident), vs observing
-that same hypothesis under the <i>negation of that hypothesis</i> (not
-being in a car accident).
+that we observe some evidence (being in a car accident), vs the
+posterior odds of that same hypothesis when observing the
+<i>negation</i> of that evidence (i.e. <i>not</i> being in a car
+accident).
 
 To extend this analogy more concretely, observe the table below:
 
@@ -108,19 +109,19 @@ different story:
 
 | hypothesis                                                | gbf_score |
 |:----------------------------------------------------------|----------:|
-| ((reckless_driver == ‘yes’) & (breathes_oxygen == ‘yes’)) | 3.5000000 |
 | (reckless_driver == ‘yes’)                                | 3.5000000 |
-| ((reckless_driver == ‘no’) & (breathes_oxygen == ‘yes’))  | 0.2857143 |
+| ((reckless_driver == ‘yes’) & (breathes_oxygen == ‘yes’)) | 3.5000000 |
 | (reckless_driver == ‘no’)                                 | 0.2857143 |
+| ((reckless_driver == ‘no’) & (breathes_oxygen == ‘yes’))  | 0.2857143 |
 
-It turns out that breathing oxygen adds no additional information to
+It turns out that breathing oxygen adds no additional information to the
 explanation of being involved in an accident when the information about
-whether or not someone is a reckless driver is taken into account, even
+whether or not someone is a reckless driver is taken into account - even
 when the presence of breathing oxygen is 100% vs being a reckless driver
 which is present in only 70% of people involved in accidents.
 
-The reason we are able to deduce that being a reckless driver is the
-Most <i>Relevant</i> Explanation is because it maximises the posterior
+The reason that the GBF is able to discover that being a reckless driver
+is the Most Relevant Explanation is because it maximises the posterior
 odds of the hypothesis given that an accident happened, relative to the
 posterior odds of the hypothesis given that an accident did not happen.
 Breathing oxygen does not maximise the same quantity because it is a
@@ -163,15 +164,15 @@ Xiaoyuan Zhu in
 beam search for solving most relevant explanation in Bayesian
 networks</i></a>, Journal of Applied Logic, Volume 22, 2017, Pages 3-13’
 as an approximate inference algorithm that performs remarkably well on a
-suite of Bayesian network benchmarks and works by applying multi-stage
+suite of Bayesian network benchmarks and works by applying a multi-stage
 scan-and-prune logic, pruning candidate hypotheses that don’t improve
-the Generalized Bayes Factor and gorwing a blacklist of hypotheses from
-which to cull successive candidate hypotheses until every Generalized
-Bayes Factor in the search space has either been explicitly evaluated or
-pruned. This reduction in the search space + pruning criteria
-combination is what makes it possible for this algorithm to enable
-reliable inference but also be computationally feasible on even large
-networks.
+the Generalized Bayes Factor, gradually growing a blacklist of
+hypotheses from which to cull successive candidate hypotheses until
+every partial instantiation of nodes in the search space has been either
+evaluated or pruned. This reduction in the search space + pruning
+criteria combination is what makes it possible for this algorithm to
+enable reliable inference but also be computationally feasible on even
+large networks.
 
 This graphic taken from their paper describes the search algorithm
 nicely:
@@ -258,14 +259,16 @@ mre_solution <- mre::mre_hierarchical_beam_search(
     ## Currently calculating Generalized Bayes Factors for 6 hypotheses. 
     ## 
     ##  Calculating GBF for Hypothesis 1 of 6 Calculating GBF for Hypothesis 2 of 6 Calculating GBF for Hypothesis 3 of 6 Calculating GBF for Hypothesis 4 of 6 Calculating GBF for Hypothesis 5 of 6 Calculating GBF for Hypothesis 6 of 6
-    ## Creating beam number 2 of 2 
-    ## Currently calculating Generalized Bayes Factors for 7 hypotheses. 
-    ## Total blacklisted hypotheses: 4 
+    ## Total blacklisted hypotheses: 0 
     ## The best scoring hypothesis is currently: 
     ##  gender == 'male'
     ## with a GBF of: 36.7063516416079 
     ## 
-    ##  Calculating GBF for Hypothesis 1 of 7 Calculating GBF for Hypothesis 2 of 7 Calculating GBF for Hypothesis 3 of 7 Calculating GBF for Hypothesis 4 of 7 Calculating GBF for Hypothesis 5 of 7 Calculating GBF for Hypothesis 6 of 7 Calculating GBF for Hypothesis 7 of 7Calculated 7 hypotheses in 0.0530729293823242 
+    ## 
+    ## Creating beam number 2 of 2 
+    ## Currently calculating Generalized Bayes Factors for 15 hypotheses. 
+    ##  Calculating GBF for Hypothesis 1 of 15 Calculating GBF for Hypothesis 2 of 15 Calculating GBF for Hypothesis 3 of 15 Calculating GBF for Hypothesis 4 of 15 Calculating GBF for Hypothesis 5 of 15 Calculating GBF for Hypothesis 6 of 15 Calculating GBF for Hypothesis 7 of 15 Calculating GBF for Hypothesis 8 of 15 Calculating GBF for Hypothesis 9 of 15 Calculating GBF for Hypothesis 10 of 15 Calculating GBF for Hypothesis 11 of 15 Calculating GBF for Hypothesis 12 of 15 Calculating GBF for Hypothesis 13 of 15 Calculating GBF for Hypothesis 14 of 15 Calculating GBF for Hypothesis 15 of 15
+    ## Calculated GBF of 15 hypotheses in 0.1 seconds. 
     ## 
     ## Hypothesis #1: ((gender == 'male') & (age == 'old')) 
     ## GBF Score: 99.9818490333196 
@@ -276,26 +279,37 @@ mre_solution <- mre::mre_hierarchical_beam_search(
     ## Hypothesis #3: (age == 'old') 
     ## GBF Score: 31.3375323606563 
     ## 
-    ## Hypothesis #4: ((gender == 'male') & (age == 'adolescent')) 
+    ## Hypothesis #4: ((age == 'adolescent') & (gender == 'male')) 
     ## GBF Score: 0.099911752292522 
     ## 
-    ## Hypothesis #5: ((gender == 'male') & (age == 'young')) 
-    ## GBF Score: 0.0774902444033682
+    ## Hypothesis #5: ((age == 'adolescent') & (gender == 'nonbinary')) 
+    ## GBF Score: 0.0855815380044233 
+    ## 
+    ## 
+    ## Total runtime 0.38 seconds.
 
 ``` r
 # show the candidate hypotheses with the greatest Generalized Bayes Factors
 knitr::kable(mre_solution)
 ```
 
-| hypothesis                                   |  gbf_score |
-|:---------------------------------------------|-----------:|
-| ((gender == ‘male’) & (age == ‘old’))        | 99.9818490 |
-| (gender == ‘male’)                           | 36.7063516 |
-| (age == ‘old’)                               | 31.3375324 |
-| ((gender == ‘male’) & (age == ‘adolescent’)) |  0.0999118 |
-| ((gender == ‘male’) & (age == ‘young’))      |  0.0774902 |
-| ((age == ‘old’) & (gender == ‘nonbinary’))   |  0.0655897 |
-| ((age == ‘old’) & (gender == ‘female’))      |  0.0642006 |
+| hypothesis                                        |  gbf_score |
+|:--------------------------------------------------|-----------:|
+| ((gender == ‘male’) & (age == ‘old’))             | 99.9818490 |
+| (gender == ‘male’)                                | 36.7063516 |
+| (age == ‘old’)                                    | 31.3375324 |
+| ((age == ‘adolescent’) & (gender == ‘male’))      |  0.0999118 |
+| ((age == ‘adolescent’) & (gender == ‘nonbinary’)) |  0.0855815 |
+| ((gender == ‘female’) & (age == ‘adolescent’))    |  0.0825484 |
+| ((gender == ‘male’) & (age == ‘young’))           |  0.0774902 |
+| ((gender == ‘nonbinary’) & (age == ‘young’))      |  0.0756816 |
+| (age == ‘adolescent’)                             |  0.0690805 |
+| ((age == ‘old’) & (gender == ‘nonbinary’))        |  0.0655897 |
+| ((gender == ‘female’) & (age == ‘old’))           |  0.0642006 |
+| (gender == ‘nonbinary’)                           |  0.0576295 |
+| ((gender == ‘female’) & (age == ‘young’))         |  0.0533751 |
+| (age == ‘young’)                                  |  0.0524426 |
+| (gender == ‘female’)                              |  0.0503034 |
 
 # Installation
 

@@ -29,7 +29,7 @@ The Generalized Bayes Factor is introduced by Yuan et al in the aforementioned p
 
 The main value of a Generalized Bayes Factor is that it solves the problem that arises when fitting predictive models or any type of correlation analysis that focuses on maximum likelihood. As a toy example, lets imagine that in the space of one year, approximately 10,000 people are injured in car accidents. Surfacing the most common characteristics among people in car accidents through a maximum likelihood framework would generate insights like "people who breathe oxygen are most likely to be involved in a car accident" - what maximum likelihood doesn't account for is the fact that <i>anyone</i> is highly likely to breathe oxygen, regardless of whether they are involved in a car accident, so the association between "breathing oxygen" and "being in a car accident" is spurious. 
 
-The Generalized Bayes Factor takes the approach of representing associations between events and hypotheses as the <i>posterior odds of observing a hypothesis</i> (e.g. breathing oxygen) under the condition that we observe some evidence (being in a car accident), vs the posterior odds of that same hypothesis when observing the <i>negation</i> of that evidence (i.e. not being in a car accident).
+The Generalized Bayes Factor takes the approach of representing associations between events and hypotheses as the <i>posterior odds of observing a hypothesis</i> (e.g. breathing oxygen) under the condition that we observe some evidence (being in a car accident), vs the posterior odds of that same hypothesis when observing the <i>negation</i> of that evidence (i.e. <i>not</i> being in a car accident).
 
 To extend this analogy more concretely, observe the table below:
 
